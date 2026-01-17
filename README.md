@@ -19,11 +19,6 @@
 
 ---
 
-## 🖼 Screenshots
-
-![Main Menu](https://github.com/roshhellwett/PayNix/blob/e83f99682983aa0ed214cab9143707a0469a6176/img/img_three.png)
----
-
 ## 🛠 Installation
 
 Clone the repo and build:
