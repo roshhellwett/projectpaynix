@@ -1,9 +1,10 @@
 /*
 * PayNix - Billing Software
- * Copyright (c) 2026 Rosh Martinez
+ * Copyright (c) 2026 Roshan Kumar Singh
  * GitHub: https://github.com/roshhellwett/PayNix
  * Licensed under MIT License
  */
+
 #include <cstdio>
 #include "menu.h"
 #include "employee.h"
@@ -12,7 +13,7 @@
 
 int main() {
 
-    char ch[10];
+    char choice;
 
     while (1) {
 
@@ -24,13 +25,14 @@ int main() {
         printf("3. EXIT\n");
 
         printf("\nENTER CHOICE : ");
-        fgets(ch, sizeof(ch), stdin);
+        choice = getchar();
+        while (getchar() != '\n');
 
-        if (ch[0] == '1') {
+        if (choice == '1') {
 
             clearScreen();
             if (!employeeLogin()) {
-                printf("\nPRESS ENTER...");
+                printf("\nPRESS ENTER TO CONTINUE...");
                 getchar();
                 continue;
             }
@@ -38,24 +40,35 @@ int main() {
             while (1) {
                 clearScreen();
                 menu();
-                printf("ENTER CHOICE : ");
-                fgets(ch, sizeof(ch), stdin);
 
-                if (ch[0] == 'I' || ch[0] == 'i') {
+                printf("ENTER CHOICE : ");
+                choice = getchar();
+                while (getchar() != '\n');
+
+                if (choice == '9') {
                     employeeLogout();
                     break;
                 }
+
+                handleMenuChoice(choice);
             }
         }
 
-        else if (ch[0] == '2') {
+        else if (choice == '2') {
             adminPanel();
         }
 
-        else if (ch[0] == '3') {
+        else if (choice == '3') {
             clearScreen();
             return 0;
         }
+
+        else {
+            setColor(RED);
+            printf("\nINVALID CHOICE\n");
+            resetColor();
+            printf("PRESS ENTER...");
+            getchar();
+        }
     }
 }
-

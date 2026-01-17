@@ -69,7 +69,12 @@ void addEmployee() {
 void viewEmployees() {
 
     FILE *fp = fopen("employees.dat", "rb");
-    if (!fp) return;
+    if (!fp) {
+        printf("\nNO EMPLOYEES FOUND\n");
+        printf("\nPRESS ENTER TO CONTINUE...");
+        getchar();
+        return;
+    }
 
     struct Employee e;
 
@@ -85,7 +90,11 @@ void viewEmployees() {
     }
 
     fclose(fp);
+
+    printf("\nPRESS ENTER TO CONTINUE...");
+    getchar();
 }
+
 
 int employeeLogin() {
 

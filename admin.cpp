@@ -5,63 +5,141 @@
  * Licensed under MIT License
  */
 #include <cstdio>
-#include "admin.h"
 #include "employee.h"
+#include <cstring>
+#include "admin.h"
 #include "ui.h"
 
-void showEmployeeActivity() {
+static void setupAdmin() {
 
-    FILE *fp = fopen("employee_log.dat", "rb");
-    if (!fp) return;
+    struct Admin a;
+    FILE *fp = fopen("admin.dat", "wb");
 
-    char line[200];
+    clearScreen();
+    printBoxTitle("FIRST TIME ADMIN SETUP");
 
-    printBoxTitle("EMPLOYEE ACTIVITY");
+    printf("Example Admin ID  : 123456\n");
+    printf("Example Password  : admin@123\n\n");
 
-    printf("%-8s %-12s %-20s %-20s\n",
-           "ACTION", "EMP ID", "NAME", "DATE & TIME");
-    printf("--------------------------------------------------------------\n");
+    printf("SET ADMIN ID : ");
+    fgets(a.admin_id, sizeof(a.admin_id), stdin);
+    a.admin_id[strcspn(a.admin_id, "\n")] = '\0';
 
-    while (fgets(line, sizeof(line), fp)) {
+    printf("SET PASSWORD : ");
+    fgets(a.password, sizeof(a.password), stdin);
+    a.password[strcspn(a.password, "\n")] = '\0';
 
-        char act[10], id[20], name[50], dt[40];
+    fwrite(&a, sizeof(a), 1, fp);
+    fclose(fp);
 
-        if (sscanf(line, "%[^|]| %[^|]| %[^|]| %[^\n]",
-                   act, id, name, dt) == 4) {
+    setColor(GREEN);
+    printf("\nADMIN SETUP COMPLETED\n");
+    resetColor();
 
-            printf("%-8s %-12s %-20s %-20s\n",
-                   act, id, name, dt);
-                   }
+    printf("PRESS ENTER...");
+    getchar();
+}
+
+static int verifyAdmin() {
+
+    struct Admin saved, input;
+    FILE *fp = fopen("admin.dat", "rb");
+
+    if (!fp) {
+        setupAdmin();
+        return 1;
     }
 
+    fread(&saved, sizeof(saved), 1, fp);
     fclose(fp);
+
+    clearScreen();
+    printBoxTitle("ADMIN LOGIN");
+
+    printf("ENTER ADMIN ID : ");
+    fgets(input.admin_id, sizeof(input.admin_id), stdin);
+    input.admin_id[strcspn(input.admin_id, "\n")] = '\0';
+
+    printf("ENTER PASSWORD : ");
+    fgets(input.password, sizeof(input.password), stdin);
+    input.password[strcspn(input.password, "\n")] = '\0';
+
+    if (strcmp(saved.admin_id, input.admin_id) == 0 &&
+        strcmp(saved.password, input.password) == 0)
+        return 1;
+
+    setColor(RED);
+    printf("\nINVALID ADMIN CREDENTIALS\n");
+    resetColor();
+
+    printf("PRESS ENTER...");
+    getchar();
+    return 0;
 }
 
 void adminPanel() {
 
-    char ch[10];
+    if (!verifyAdmin())
+        return;
+
+    char ch;
 
     while (1) {
-
         clearScreen();
         printBoxTitle("ADMIN PANEL");
-
         printf("1. ADD EMPLOYEE\n");
         printf("2. VIEW EMPLOYEES\n");
-        printf("3. EMPLOYEE ACTIVITY\n");
-        printf("4. EXIT\n");
-
+        printf("3. VIEW EMPLOYEE ACTIVITY\n");
+        printf("4. EXIT ADMIN PANEL\n");
         printf("\nENTER CHOICE : ");
-        fgets(ch, sizeof(ch), stdin);
+        ch = getchar();
+        while (getchar() != '\n');
 
-        clearScreen();
+        if (ch == '1') {
+            addEmployee();
+        }
+        else if (ch == '2') {
+            viewEmployees();
+        }
+        else if (ch == '3') {
+            showEmployeeActivity();
+        }
+        else if (ch == '4') {
+            return;
+        }
 
-        if (ch[0] == '1') addEmployee();
-        else if (ch[0] == '2') viewEmployees();
-        else if (ch[0] == '3') showEmployeeActivity();
-        else if (ch[0] == '4') return;
-
-        printf("\nPRESS ENTER...");
-        getchar();
     }
 }
+void showEmployeeActivity() {
+
+    FILE *fp = fopen("employee_log.dat", "r");
+    if (!fp) {
+        printf("\nNO EMPLOYEE ACTIVITY FOUND\n");
+        printf("\nPRESS ENTER...");
+        getchar();
+        return;
+    }
+
+    clearScreen();
+    printBoxTitle("EMPLOYEE LOGIN ACTIVITY");
+
+    printf("%-6s | %-12s | %-25s | %s\n",
+           "TYPE", "EMP ID", "EMPLOYEE NAME", "DATE & TIME");
+    printf("-----------------------------------------------------------------------\n");
+
+    char action[10], empid[20], name[30], datetime[40];
+
+    while (fscanf(fp,
+           "%9[^|]|%19[^|]|%29[^|]|%39[^\n]\n",
+           action, empid, name, datetime) == 4) {
+
+        printf("%-6s | %-12s | %-25s | %s\n",
+               action, empid, name, datetime);
+           }
+
+    fclose(fp);
+
+    printf("\nPRESS ENTER...");
+    getchar();
+}
+

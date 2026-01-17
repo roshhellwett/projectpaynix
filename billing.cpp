@@ -94,6 +94,8 @@ void billing() {
                 bh.item_count++;
 
                 found = 1;
+                printf("\nPRESS ENTER...");
+                getchar();
                 break;
             }
         }
