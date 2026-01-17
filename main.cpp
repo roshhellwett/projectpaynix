@@ -32,7 +32,6 @@ int main() {
             while (1) {
                 clearScreen();
                 menu();
-                printf("\nI. LOGOUT\n");
                 printf("ENTER CHOICE : ");
                 fgets(ch, sizeof(ch), stdin);
 

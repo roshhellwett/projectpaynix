@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 4.0)
-project(BillingSoftware)
+project(PayNix)
 
 set(CMAKE_CXX_STANDARD 26)
 
-add_executable(BillingSoftware main.cpp
+add_executable(PayNix main.cpp
         menu.cpp
         menu.h
         storeItems.cpp

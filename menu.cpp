@@ -14,6 +14,6 @@ void menu() {
     printf("F. VIEW CUSTOMER DATA\n");
     printf("G. MAKE CHANGES TO ORDER\n");
     printf("H. CREDITS\n");
-    printf("I. EXIT\n");
+    printf("I. LOGOUT\n");
     printf("========================\n");
 }
