@@ -1,3 +1,9 @@
+/*
+* PayNix - Billing Software
+ * Copyright (c) 2026 Rosh Martinez
+ * GitHub: https://github.com/roshhellwett/PayNix
+ * Licensed under MIT License
+ */
 #include <cstdio>
 #include "menu.h"
 #include "employee.h"
@@ -52,3 +58,4 @@ int main() {
         }
     }
 }
+
