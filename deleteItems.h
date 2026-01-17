@@ -1,0 +1,8 @@
+//
+// Created by roshh on 17-01-2026.
+//
+
+#ifndef BILLINGSOFTWARE_DELETEITEMS_H
+#define BILLINGSOFTWARE_DELETEITEMS_H
+void deleteItems();
+#endif //BILLINGSOFTWARE_DELETEITEMS_H

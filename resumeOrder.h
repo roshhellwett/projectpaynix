@@ -1,0 +1,12 @@
+//
+// Created by roshh on 17-01-2026.
+//
+
+#ifndef BILLINGSOFTWARE_RESUMEORDER_H
+#define BILLINGSOFTWARE_RESUMEORDER_H
+
+
+void resumeOrder();
+
+
+#endif //BILLINGSOFTWARE_RESUMEORDER_H

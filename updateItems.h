@@ -1,0 +1,12 @@
+//
+// Created by roshh on 17-01-2026.
+//
+
+#ifndef BILLINGSOFTWARE_UPDATEITEMS_H
+#define BILLINGSOFTWARE_UPDATEITEMS_H
+
+
+void updateItems();
+
+
+#endif //BILLINGSOFTWARE_UPDATEITEMS_H

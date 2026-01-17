@@ -1,0 +1,10 @@
+
+
+#ifndef BILLINGSOFTWARE_DATETIME_H
+#define BILLINGSOFTWARE_DATETIME_H
+
+
+void getDateTime(char *buffer);
+
+
+#endif //BILLINGSOFTWARE_DATETIME_H

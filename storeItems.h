@@ -1,0 +1,8 @@
+//
+// Created by roshh on 16-01-2026.
+//
+
+#ifndef BILLINGSOFTWARE_STOREITEMS_H
+#define BILLINGSOFTWARE_STOREITEMS_H
+void storeItems();
+#endif //BILLINGSOFTWARE_STOREITEMS_H

@@ -1,0 +1,12 @@
+//
+// Created by roshh on 17-01-2026.
+//
+
+#ifndef BILLINGSOFTWARE_VIEWCUSTOMERS_H
+#define BILLINGSOFTWARE_VIEWCUSTOMERS_H
+
+
+void viewCustomers();
+
+
+#endif //BILLINGSOFTWARE_VIEWCUSTOMERS_H
