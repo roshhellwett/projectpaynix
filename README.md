@@ -5,9 +5,9 @@
     💼 Modern Billing Software — Simple, Fast & Powerful
   </p>
 <p align="center">
-<img src="https://github.com/roshhellwett/PayNix/blob/e83f99682983aa0ed214cab9143707a0469a6176/img/img_one.png" width="300" height="300"/>
-<img src="https://github.com/roshhellwett/PayNix/blob/e83f99682983aa0ed214cab9143707a0469a6176/img/img_two.png" width="300" height="300"/>
-<img src="https://github.com/roshhellwett/PayNix/blob/e83f99682983aa0ed214cab9143707a0469a6176/img/img_three.png" width="300" height="300"/>
+<img src="https://github.com/roshhellwett/PayNix/blob/e83f99682983aa0ed214cab9143707a0469a6176/img/img_one.png" width="250" height="300"/>
+<img src="https://github.com/roshhellwett/PayNix/blob/e83f99682983aa0ed214cab9143707a0469a6176/img/img_two.png" width="250" height="300"/>
+<img src="https://github.com/roshhellwett/PayNix/blob/e83f99682983aa0ed214cab9143707a0469a6176/img/img_three.png" width="250" height="300"/>
 </p>
 </p>
 
