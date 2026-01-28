@@ -4,11 +4,14 @@
  * GitHub: https://github.com/roshhellwett/PayNix
  * Licensed under MIT License
  */
+
 #include <cstdio>
+#include <cstring>
 #include "deleteItems.h"
 #include "items.h"
 #include "showItems.h"
 #include "ui.h"
+#include "dataPath.h"
 
 void deleteItems() {
 
@@ -17,51 +20,61 @@ void deleteItems() {
 
     showItemsForBilling();
 
-    FILE *fp, *tempfp;
-    struct items item;
-    int delete_no, found = 0;
-
-    fp = fopen("items.dat", "rb");
-    if (fp == NULL) {
+    FILE *fp = fopen(ITEMS_FILE, "rb");
+    if (!fp) {
         setColor(RED);
         printf("NO ITEMS FOUND.\n");
         resetColor();
+        printf("PRESS ENTER...");
+        getchar();
         return;
     }
 
-    tempfp = fopen("temp.dat", "wb");
-    if (tempfp == NULL) {
+    FILE *tempfp = fopen("data/temp.dat", "wb");
+    if (!tempfp) {
         setColor(RED);
         printf("TEMP FILE ERROR.\n");
         resetColor();
         fclose(fp);
+        printf("PRESS ENTER...");
+        getchar();
         return;
     }
 
-    printf("ENTER THE ITEM ID TO DELETE: ");
-    scanf("%d", &delete_no);
+    items item;
+    char delete_id[30];
+    int found = 0;
 
-    while (fread(&item, sizeof(struct items), 1, fp)) {
-        if (item.item_number == delete_no) {
+    printf("\nENTER THE ITEM ID TO DELETE: ");
+    fgets(delete_id, sizeof(delete_id), stdin);
+    delete_id[strcspn(delete_id, "\n")] = 0;
+
+    while (fread(&item, sizeof(item), 1, fp)) {
+
+        if (strcmp(item.item_number, delete_id) == 0) {
             found = 1;
-            continue;
+            continue;   // skip writing -> delete
         }
-        fwrite(&item, sizeof(struct items), 1, tempfp);
+
+        fwrite(&item, sizeof(item), 1, tempfp);
     }
 
     fclose(fp);
     fclose(tempfp);
 
-    remove("items.dat");
-    rename("temp.dat", "items.dat");
+    remove(ITEMS_FILE);
+    rename("data/temp.dat", ITEMS_FILE);
 
     if (found) {
         setColor(GREEN);
-        printf("ITEM DELETED SUCCESSFULLY.\n");
+        printf("\nITEM DELETED SUCCESSFULLY.\n");
         resetColor();
     } else {
         setColor(RED);
-        printf("ITEM NOT FOUND.\n");
+        printf("\nITEM NOT FOUND.\n");
         resetColor();
     }
+
+    printf("\nPRESS ENTER TO CONTINUE...");
+    getchar();
 }

@@ -4,37 +4,37 @@
  * GitHub: https://github.com/roshhellwett/PayNix
  * Licensed under MIT License
  */
+
 #include <cstdio>
 #include "showItems.h"
 #include "items.h"
 #include "ui.h"
+#include "dataPath.h"
 
 void showItemsForBilling() {
 
-    struct items temp;
-    FILE *fp = fopen("items.dat", "rb");
+    FILE *fp = fopen(ITEMS_FILE, "rb");
+    items temp;
 
-    if (fp == NULL) {
+    if (!fp) {
         setColor(RED);
-        printf("NO ITEMS AVAILABLE.\n");
+        printf("NO ITEMS AVAILABLE\n");
         resetColor();
         return;
     }
 
-
-    setColor(YELLOW);
-    printf("%-10s %-20s %10s\n", "ITEM ID", "ITEM NAME", "PRICE");
+    printBoxTitle("AVAILABLE ITEMS");
+    printf("ITEM ID       ITEM NAME               PRICE\n");
     printf("--------------------------------------------\n");
-    resetColor();
 
-    while (fread(&temp, sizeof(struct items), 1, fp)) {
-        printf("%-10d %-20s %10.2f\n",
+    while (fread(&temp, sizeof(temp), 1, fp)) {
+        printf("%-12s %-22s %8.2f\n",
                temp.item_number,
                temp.item_name,
                temp.item_price);
     }
 
     printf("--------------------------------------------\n");
-
     fclose(fp);
 }
+

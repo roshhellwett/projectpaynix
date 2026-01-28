@@ -1,143 +1,142 @@
 /*
-* PayNix - Billing Software
+ * PayNix - Billing Software
  * Copyright (c) 2026 Roshan Kumar Singh
  * GitHub: https://github.com/roshhellwett/PayNix
  * Licensed under MIT License
  */
+
 #include <cstdio>
 #include <cstring>
 #include "billing.h"
 #include "items.h"
 #include "showItems.h"
 #include "DateTime.h"
+#include "dataPath.h"
 #include "ui.h"
+
+/* ---------- BILL SUMMARY ---------- */
+
+static void printBillSummary(BillHeader &bh, BillItem bi[]) {
+
+    printBoxTitle("BILL SUMMARY");
+
+    printf("%-18s %-5s %-8s %-8s\n",
+           "ITEM", "QTY", "PRICE", "TOTAL");
+    printf("--------------------------------------------\n");
+
+    for (int i = 0; i < bh.item_count; i++) {
+        printf("%-18s %-5d %-8.2f %-8.2f\n",
+               bi[i].item_name,
+               bi[i].quantity,
+               bi[i].price,
+               bi[i].total);
+    }
+
+    printf("--------------------------------------------\n");
+    printf("GRAND TOTAL : %.2f\n", bh.grand_total);
+}
+
+/* ---------- BILLING ---------- */
 
 void billing() {
 
+    items temp;
+    BillHeader bh;
+    BillItem bi[50];
+
+    FILE *fpI = fopen(ITEMS_FILE, "rb");
+    FILE *fpB = fopen(BILL_FILE, "ab");
+
+    if (!fpI || !fpB) {
+        setColor(RED);
+        printf("ERROR OPENING DATA FILES\n");
+        resetColor();
+        if (fpI) fclose(fpI);
+        if (fpB) fclose(fpB);
+        return;
+    }
+
     clearScreen();
-    printBoxTitle("BILLING SECTION");
+    printBoxTitle("BILLING");
 
-    struct BillHeader bh;
-    struct BillItem itemsArr[50];
-    struct items temp;
-
-    FILE *fpItems = NULL;
-    FILE *fpBill  = NULL;
-
-    int search_no, qty;
-    int found;
-    char more;
-
-
-    setColor(YELLOW);
-    printBoxTitle("CUSTOMER DETAILS");
-    resetColor();
-
-    printf("ENTER CUSTOMER NAME : ");
+    printf("CUSTOMER NAME : ");
     fgets(bh.customer_name, sizeof(bh.customer_name), stdin);
-    bh.customer_name[strcspn(bh.customer_name, "\n")] = '\0';
+    bh.customer_name[strcspn(bh.customer_name, "\n")] = 0;
 
-    printf("ENTER CUSTOMER PHONE NUMBER : ");
+    printf("PHONE : ");
     fgets(bh.phone, sizeof(bh.phone), stdin);
-    bh.phone[strcspn(bh.phone, "\n")] = '\0';
+    bh.phone[strcspn(bh.phone, "\n")] = 0;
 
-    strcpy(bh.last4, &bh.phone[strlen(bh.phone) - 4]);
+    if (strlen(bh.phone) >= 4)
+        strcpy(bh.last4, &bh.phone[strlen(bh.phone) - 4]);
+    else
+        strcpy(bh.last4, "XXXX");
+
     getDateTime(bh.datetime);
 
     bh.item_count = 0;
     bh.grand_total = 0;
 
-
     showItemsForBilling();
 
-    fpItems = fopen("items.dat", "rb");
-    fpBill  = fopen("bills.dat", "ab");
+    char id[30];
+    int qty;
+    char more = 'y';
 
-    if (!fpItems || !fpBill) {
-        setColor(RED);
-        printf("File error!\n");
-        resetColor();
-        return;
-    }
+    while ((more == 'y' || more == 'Y') && bh.item_count < 50) {
 
-    setColor(GREEN);
-    printBoxTitle("BILLING STARTED");
-    resetColor();
+        printf("ITEM ID : ");
+        fgets(id, sizeof(id), stdin);
+        id[strcspn(id, "\n")] = 0;
 
-    do {
-        found = 0;
-
-        printf("ENTER ITEM ID : ");
-        scanf("%d", &search_no);
-
-        printf("ENTER QUANTITY : ");
+        printf("QTY : ");
         scanf("%d", &qty);
+        getchar();
 
-        rewind(fpItems);
+        int found = 0;
+        rewind(fpI);
 
-        while (fread(&temp, sizeof(struct items), 1, fpItems)) {
-            if (temp.item_number == search_no) {
+        while (fread(&temp, sizeof(temp), 1, fpI)) {
+            if (strcmp(temp.item_number, id) == 0) {
 
-                itemsArr[bh.item_count].item_number = temp.item_number;
-                strcpy(itemsArr[bh.item_count].item_name, temp.item_name);
-                itemsArr[bh.item_count].price = temp.item_price;
-                itemsArr[bh.item_count].quantity = qty;
-                itemsArr[bh.item_count].total = temp.item_price * qty;
+                strcpy(bi[bh.item_count].item_id, id);
+                strcpy(bi[bh.item_count].item_name, temp.item_name);
+                bi[bh.item_count].price = temp.item_price;
+                bi[bh.item_count].quantity = qty;
+                bi[bh.item_count].total = qty * temp.item_price;
 
-                setColor(GREEN);
-                printf("\nITEM  : %s", itemsArr[bh.item_count].item_name);
-                printf("\nQTY   : %d", qty);
-                printf("\nTOTAL : %.2f\n", itemsArr[bh.item_count].total);
-                resetColor();
-
-                bh.grand_total += itemsArr[bh.item_count].total;
+                bh.grand_total += bi[bh.item_count].total;
                 bh.item_count++;
 
                 found = 1;
-                printf("\nPRESS ENTER...");
-                getchar();
                 break;
             }
         }
 
         if (!found) {
             setColor(RED);
-            printf("Item not found!\n");
+            printf("INVALID ITEM ID\n");
             resetColor();
         }
 
-        printf("ADD MORE ITEMS (Y/N): ");
+        printf("MORE (Y/N): ");
         scanf(" %c", &more);
-
-    } while (more == 'Y' || more == 'y');
-
-    fwrite(&bh, sizeof(struct BillHeader), 1, fpBill);
-
-    for (int i = 0; i < bh.item_count; i++) {
-        fwrite(&itemsArr[i], sizeof(struct BillItem), 1, fpBill);
+        getchar();
     }
 
-    fclose(fpItems);
-    fclose(fpBill);
+    /* ---------- SAVE BILL ---------- */
 
-    setColor(CYAN);
-    printBoxTitle("BILL RECEIPT");
-    resetColor();
-
-    printf("CUSTOMER : %s\n", bh.customer_name);
-    printf("PHONE    : %s\n", bh.phone);
-    printf("DATETIME : %s\n", bh.datetime);
-
-    printf("--------------------------------------\n");
+    fwrite(&bh, sizeof(bh), 1, fpB);
     for (int i = 0; i < bh.item_count; i++) {
-        printf("%-15s Qty:%-4d Total:%7.2f\n",
-               itemsArr[i].item_name,
-               itemsArr[i].quantity,
-               itemsArr[i].total);
+        fwrite(&bi[i], sizeof(BillItem), 1, fpB);
     }
-    printf("--------------------------------------\n");
 
-    setColor(GREEN);
-    printf("GRAND TOTAL: %.2f\n", bh.grand_total);
-    resetColor();
+    fclose(fpI);
+    fclose(fpB);
+
+    /* ---------- SHOW SUMMARY ---------- */
+
+    clearScreen();
+    printBillSummary(bh, bi);
+
 }

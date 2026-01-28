@@ -4,6 +4,7 @@
  * GitHub: https://github.com/roshhellwett/PayNix
  * Licensed under MIT License
  */
+
 #include <cstdio>
 #include "menu.h"
 #include "storeItems.h"
@@ -18,7 +19,8 @@
 
 void menu() {
 
-    printf("\n========= MENU =========\n");
+    clearScreen();
+    printf("========= MENU =========\n");
     printf("1. STORE NEW ITEMS\n");
     printf("2. BILLING (MULTIPLE ITEMS)\n");
     printf("3. SHOW ALL ITEMS\n");
@@ -29,53 +31,48 @@ void menu() {
     printf("8. CREDITS\n");
     printf("9. LOGOUT\n");
     printf("========================\n");
+    printf("ENTER CHOICE : ");
 }
 
-void handleMenuChoice(char choice) {
+void handleMenuChoice(int choice) {
+
+    clearScreen();
 
     switch (choice) {
 
-        case '1':
-            printBoxTitle("STORE NEW ITEMS");
+        case 1:
             storeItems();
             break;
 
-        case '2':
-            printBoxTitle("BILLING SECTION");
+        case 2:
             billing();
             break;
 
-        case '3':
-            printBoxTitle("AVAILABLE ITEMS");
+        case 3:
             showItemsForBilling();
             break;
 
-        case '4':
-            printBoxTitle("UPDATE ITEM / PRICE");
+        case 4:
             updateItems();
             break;
 
-        case '5':
-            printBoxTitle("DELETE ITEMS");
+        case 5:
             deleteItems();
             break;
 
-        case '6':
-            printBoxTitle("CUSTOMER BILL HISTORY");
+        case 6:
             viewCustomers();
             break;
 
-        case '7':
-            printBoxTitle("RESUME / EDIT ORDER");
+        case 7:
             resumeOrder();
             break;
 
-        case '8':
-            printBoxTitle("CREDITS");
+        case 8:
             showCreatorInfo();
             break;
 
-        case '9':
+        case 9:
             setColor(GREEN);
             printf("\nLOGGING OUT...\n");
             resetColor();

@@ -1,15 +1,17 @@
 /*
-* PayNix - Billing Software
+ * PayNix - Billing Software
  * Copyright (c) 2026 Roshan Kumar Singh
  * GitHub: https://github.com/roshhellwett/PayNix
  * Licensed under MIT License
  */
+
 #include <cstdio>
 #include <cstring>
 #include "updateItems.h"
 #include "items.h"
 #include "showItems.h"
 #include "ui.h"
+#include "dataPath.h"
 
 void updateItems() {
 
@@ -18,33 +20,38 @@ void updateItems() {
 
     showItemsForBilling();
 
-    FILE *fp, *tempfp;
-    struct items item;
-    int search_no, found = 0;
-
-    fp = fopen("items.dat", "rb");
-    if (fp == NULL) {
+    FILE *fp = fopen(ITEMS_FILE, "rb");
+    if (!fp) {
         setColor(RED);
         printf("NO ITEMS FOUND.\n");
         resetColor();
+        printf("PRESS ENTER...");
+        getchar();
         return;
     }
 
-    tempfp = fopen("temp.dat", "wb");
-    if (tempfp == NULL) {
+    FILE *tempfp = fopen("data/temp.dat", "wb");
+    if (!tempfp) {
         setColor(RED);
         printf("TEMP FILE ERROR.\n");
         resetColor();
         fclose(fp);
+        printf("PRESS ENTER...");
+        getchar();
         return;
     }
 
-    printf("ENTER THE ITEM ID TO UPDATE: ");
-    scanf("%d", &search_no);
+    items item;
+    char search_id[30];
+    int found = 0;
 
-    while (fread(&item, sizeof(struct items), 1, fp)) {
+    printf("\nENTER THE ITEM ID TO UPDATE: ");
+    fgets(search_id, sizeof(search_id), stdin);
+    search_id[strcspn(search_id, "\n")] = 0;
 
-        if (item.item_number == search_no) {
+    while (fread(&item, sizeof(item), 1, fp)) {
+
+        if (strcmp(item.item_number, search_id) == 0) {
             found = 1;
 
             setColor(YELLOW);
@@ -52,31 +59,34 @@ void updateItems() {
             printf("CURRENT PRICE : %.2f\n", item.item_price);
             resetColor();
 
-            printf("ENTER NEW NAME  : ");
-            getchar();
+            printf("\nENTER NEW NAME  : ");
             fgets(item.item_name, sizeof(item.item_name), stdin);
-            item.item_name[strcspn(item.item_name, "\n")] = '\0';
+            item.item_name[strcspn(item.item_name, "\n")] = 0;
 
             printf("ENTER NEW PRICE : ");
             scanf("%f", &item.item_price);
+            getchar();
         }
 
-        fwrite(&item, sizeof(struct items), 1, tempfp);
+        fwrite(&item, sizeof(item), 1, tempfp);
     }
 
     fclose(fp);
     fclose(tempfp);
 
-    remove("items.dat");
-    rename("temp.dat", "items.dat");
+    remove(ITEMS_FILE);
+    rename("data/temp.dat", ITEMS_FILE);
 
     if (found) {
         setColor(GREEN);
-        printf("ITEM UPDATED SUCCESSFULLY.\n");
+        printf("\nITEM UPDATED SUCCESSFULLY.\n");
         resetColor();
     } else {
         setColor(RED);
-        printf("ITEM NOT FOUND.\n");
+        printf("\nITEM NOT FOUND.\n");
         resetColor();
     }
+
+    printf("\nPRESS ENTER TO CONTINUE...");
+    getchar();
 }

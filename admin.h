@@ -6,10 +6,13 @@
  */
 #ifndef BILLINGSOFTWARE_ADMIN_H
 #define BILLINGSOFTWARE_ADMIN_H
+
+struct Admin {
+    char admin_id[20];
+    char password[20];
+};
+
 void adminPanel();
 void showEmployeeActivity();
-struct Admin {
-    char admin_id[30];
-    char password[30];
-};
-#endif //BILLINGSOFTWARE_ADMIN_H
+
+#endif // BILLINGSOFTWARE_ADMIN_H

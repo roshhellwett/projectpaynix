@@ -7,18 +7,11 @@
 #ifndef BILLINGSOFTWARE_UI_H
 #define BILLINGSOFTWARE_UI_H
 
-#define RED     31
-#define GREEN   32
-#define YELLOW  33
-#define BLUE    34
-#define CYAN    36
-#define WHITE   37
+enum Color { RED=31, GREEN=32, YELLOW=33, BLUE=34, CYAN=36, RESET=0 };
 
-
-void clearScreen();
-void setColor(int color);
+void setColor(int);
 void resetColor();
-void printBoxTitle(const char *title);
-
-
+void clearScreen();
+void printBoxTitle(const char*);
+void inputHidden(char* buffer, int size);
 #endif //BILLINGSOFTWARE_UI_H

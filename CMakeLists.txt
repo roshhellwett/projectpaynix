@@ -33,4 +33,5 @@ add_executable(PayNix main.cpp
         employee.h
         admin.cpp
         admin.h
+        dataPath.h
 )

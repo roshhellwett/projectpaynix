@@ -18,7 +18,5 @@ struct Employee {
 
 int employeeLogin();
 void employeeLogout();
-void addEmployee();
-void viewEmployees();
 
-#endif //BILLINGSOFTWARE_EMPLOYEE_H
+#endif // BILLINGSOFTWARE_EMPLOYEE_H

@@ -4,16 +4,32 @@
  * GitHub: https://github.com/roshhellwett/PayNix
  * Licensed under MIT License
  */
+
 #include <cstdio>
 #include <cstdlib>
+
+#ifdef _WIN32
+#include <conio.h>
+#else
+#include <termios.h>
+#include <unistd.h>
+#endif
+
 #include "ui.h"
 
-#define RED     31
-#define GREEN   32
-#define YELLOW  33
-#define BLUE    34
-#define CYAN    36
-#define WHITE   37
+/* ---------- COLORS ---------- */
+
+void setColor(int c) {
+    printf("\033[%dm", c);
+    fflush(stdout);
+}
+
+void resetColor() {
+    printf("\033[0m");
+    fflush(stdout);
+}
+
+/* ---------- SCREEN ---------- */
 
 void clearScreen() {
 #ifdef _WIN32
@@ -23,18 +39,63 @@ void clearScreen() {
 #endif
 }
 
-void setColor(int color) {
-    printf("\033[1;%dm", color);
-}
+/* ---------- BOX TITLE ---------- */
 
-void resetColor() {
-    printf("\033[0m");
-}
-
-void printBoxTitle(const char *title) {
+void printBoxTitle(const char *t) {
     setColor(CYAN);
     printf("+--------------------------------------+\n");
-    printf("| %-36s |\n", title);
+    printf("| %-36s |\n", t);
     printf("+--------------------------------------+\n");
     resetColor();
+}
+
+/* ---------- HIDDEN INPUT ---------- */
+
+void inputHidden(char *buf, int size) {
+
+    int i = 0;
+    char ch = 0;
+
+#ifdef _WIN32
+
+    while ((ch = getch()) != '\r' && i < size - 1) {
+
+        if ((ch == 8 || ch == 127) && i > 0) {   // backspace
+            i--;
+            printf("\b \b");
+            fflush(stdout);
+        }
+        else if (ch >= 32) {
+            buf[i++] = ch;
+            printf("*");
+            fflush(stdout);
+        }
+    }
+
+#else
+    struct termios oldt{}, newt{};
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+
+    while ((ch = getchar()) != '\n' && i < size - 1) {
+
+        if ((ch == 8 || ch == 127) && i > 0) {   // backspace
+            i--;
+            printf("\b \b");
+            fflush(stdout);
+        }
+        else if (ch >= 32) {
+            buf[i++] = ch;
+            printf("*");
+            fflush(stdout);
+        }
+    }
+
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+#endif
+
+    buf[i] = '\0';
+    printf("\n");
 }

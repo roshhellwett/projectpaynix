@@ -7,5 +7,5 @@
 #ifndef BILLINGSOFTWARE_MENU_H
 #define BILLINGSOFTWARE_MENU_H
 void menu();
-void handleMenuChoice(char choice);
+void handleMenuChoice(int choice);
 #endif //BILLINGSOFTWARE_MENU_H
