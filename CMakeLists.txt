@@ -17,7 +17,7 @@ endif()
 
 include_directories(include)
 
-add_executable(PayNix src/main.cpp src/Logic.cpp src/UI.cpp)
+add_executable(PayNix src/main.cpp src/Logic.cpp src/UI.cpp PayNix.rc)
 
 find_package(Threads REQUIRED)
 target_link_libraries(PayNix Threads::Threads)
