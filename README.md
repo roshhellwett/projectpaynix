@@ -69,6 +69,9 @@ jobs:
   📬 Have suggestions? Open an issue or start a discussion<br><br>
   ⭐ <b>If you like this project, give it a star!</b>
 </p>
+---
 
+© 2026 [Zenith Open Source Projects](https://zenithprojects.up.railway.app/). All Rights Reserved.  
+Zenith is a Open Source Project Idea's by @roshhellwett
 
-
+---
