@@ -1,0 +1,61 @@
+# ========================================
+# CMake & Build Outputs
+# ========================================
+/build/
+/out/
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+
+# ========================================
+# Compiled Binaries & Object Files
+# ========================================
+*.exe
+*.o
+*.obj
+*.dll
+*.so
+*.dylib
+*.lib
+*.a
+*.pdb
+*.ilk
+
+# ========================================
+# Application Runtime Data & Logs
+# (SECURITY: Never commit live databases!)
+# ========================================
+/data/
+/exports/
+/reports/
+*.dat
+*.bak
+*.tmp
+*.log
+*.json
+
+# ========================================
+# IDEs & Editor Configurations
+# ========================================
+.vs/
+.vscode/
+*.user
+*.suo
+*.sln
+*.vcxproj
+*.vcxproj.filters
+
+# ========================================
+# OS Specific System Files
+# ========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
