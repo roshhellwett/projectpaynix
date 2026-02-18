@@ -1,3 +1,9 @@
+![Repo Size](https://img.shields.io/github/repo-size/roshhellwett/projectpaynix?style=for-the-badge)
+![Stars](https://img.shields.io/github/stars/roshhellwett/projectpaynix?style=for-the-badge)
+![Forks](https://img.shields.io/github/forks/roshhellwett/projectpaynix?style=for-the-badge)
+![Issues](https://img.shields.io/github/issues/roshhellwett/projectpaynix?style=for-the-badge)
+![Windows](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows)
+
 # PROJECT PAYNIX
 
 PayNix is a highly robust, terminal-based Point of Sale (POS) and inventory management application. Engineered with a "security-first" mindset, PayNix features encrypted data storage, strict buffer-overflow protections, atomic financial transactions, and role-based access control.
@@ -41,6 +47,32 @@ To build and run PayNix, you will need:
 PayNix uses CMake for cross-platform compilation. Follow these steps to build from source:
 
 1. **Clone the repository:**
-   ```bash
+```bash
    git clone [https://github.com/yourusername/projectpaynix.git](https://github.com/yourusername/projectpaynix.git)
    cd projectpaynix
+```
+## 📂 Project Structure
+```
+projectpaynix/
+├── CMakeLists.txt        # Build configuration
+├── security.md           # Vulnerability reporting & supported versions
+├── include/              # Header files
+│   ├── Core.hpp          # System constants, types, and logging
+│   ├── Data.hpp          # Secure binary repository patterns
+│   ├── Logic.hpp         # Business logic (Auth, Inventory, Billing)
+│   ├── Models.hpp        # Data structures and SafeStrings
+│   ├── Security.hpp      # Cryptography, hashing, and sanitization
+│   └── UI.hpp            # Terminal rendering and inputs
+└── src/                  # Implementation files
+    ├── Logic.cpp         
+    ├── UI.cpp            
+    └── main.cpp          # Application entry point & OS traps
+
+```
+
+---
+
+© 2026 [Zenith Open Source Projects](https://zenithopensourceprojects.vercel.app/). All Rights Reserved.  
+Zenith is a Open Source Project Idea's by @roshhellwett
+
+---
