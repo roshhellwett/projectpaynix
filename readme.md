@@ -31,16 +31,12 @@ PayNix is a highly robust, terminal-based Point of Sale (POS) and inventory mana
 * Full CRUD operations for items (Add, Update, Soft-Delete).
 * Stock validation and automated deductions.
 
----
-
 ## 🛠️ Prerequisites
 
 To build and run PayNix, you will need:
 * **CMake:** Version 3.20 or higher.
 * **C++ Compiler:** C++20 compatible compiler (GCC, Clang, or MSVC).
 * **Threads:** OS-level threading support (pthreads/Windows threads).
-
----
 
 ## 🚀 Build Instructions
 
@@ -51,6 +47,9 @@ PayNix uses CMake for cross-platform compilation. Follow these steps to build fr
    git clone [https://github.com/yourusername/projectpaynix.git](https://github.com/yourusername/projectpaynix.git)
    cd projectpaynix
 ```
+
+---
+
 ## 📂 Project Structure
 ```
 projectpaynix/
@@ -74,5 +73,3 @@ projectpaynix/
 
 © 2026 [Zenith Open Source Projects](https://zenithopensourceprojects.vercel.app/). All Rights Reserved.  
 Zenith is a Open Source Project Idea's by @roshhellwett
-
----
